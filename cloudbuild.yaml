@@ -1,0 +1,21 @@
+steps:
+  # Step 1: Build the Docker image with a tag
+  - name: 'gcr.io/cloud-builders/docker'
+    args: [
+      'build',
+      '-t',
+      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA',
+      '-t',
+      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest',
+      '--cache-from',
+      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest',
+      '.'
+    ]
+    id: 'build'
+
+  # Step 2: Push the Docker image to Google Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA']
+    id: 'push'
+images:
+  - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
