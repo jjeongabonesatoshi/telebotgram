@@ -1,25 +1,27 @@
 steps:
   # Step 1: Build the Docker image with a tag
   - name: 'gcr.io/cloud-builders/docker'
-    args: [
-      'build',
-      '-t',
-      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA',
-      '-t',
-      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest',
-      '--cache-from',
-      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest',
-      '.'
-    ]
+    args:
+      [
+        'build',
+        '-t',
+        'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA',
+        '-t',
+        'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest',
+        '--cache-from',
+        'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest',
+        '.'
+      ]
     id: 'build'
 
   # Step 2: Push the Docker image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA']
     id: 'push'
-  # Step 3: Verify connection to the GCE instance by executing a simple command
+
+  # Step 3 & 4: Verify connection to the GCE instance and check if Docker is installed, install if not
   - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'verify-connection'
+    id: 'verify-and-install-docker'
     args:
       - 'compute'
       - 'ssh'
@@ -27,8 +29,18 @@ steps:
       - '--zone'
       - 'asia-east2-a' # Replace with your instance zone
       - '--command'
-      - 'echo "Successfully connected to instance"'
-images:
-  - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
-options:
-  logging: CLOUD_LOGGING_ONLY
+      - |
+          echo "Successfully connected to instance" &&
+          if ! command -v docker &> /dev/null
+          then
+            sudo apt-get update &&
+            sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common &&
+            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&
+            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" &&
+            sudo apt-get update &&
+            sudo apt-get install -y docker-ce &&
+            sudo usermod -aG docker $USER &&
+            newgrp docker
+          else
+            echo "Docker is already installed"
+          fi
