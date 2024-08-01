@@ -53,6 +53,20 @@ steps:
       - 'asia-east2-a' # Replace with your instance zone
       - '--command'
       - 'docker pull asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
+  # Step 7: Run the Docker container
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'run-container'
+    args:
+      - 'compute'
+      - 'ssh'
+      - 'devserver' # Replace with your instance name
+      - '--zone'
+      - 'asia-east2-a' # Replace with your instance zone
+      - '--command'
+      - |
+          docker stop telebot-container || true &&
+          docker rm telebot-container || true &&
+          docker run -d --name telebot-container -p 80:80 asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest
 images:
   - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
 options:
