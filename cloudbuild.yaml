@@ -19,3 +19,5 @@ steps:
     id: 'push'
 images:
   - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
+options:
+  logging: CLOUD_LOGGING_ONLY
