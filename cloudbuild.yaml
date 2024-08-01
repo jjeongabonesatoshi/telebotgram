@@ -17,6 +17,17 @@ steps:
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA']
     id: 'push'
+  # Step 3: Verify connection to the GCE instance by executing a simple command
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'verify-connection'
+    args:
+      - 'compute'
+      - 'ssh'
+      - 'INSTANCE_NAME' # Replace with your instance name
+      - '--zone'
+      - 'ZONE' # Replace with your instance zone
+      - '--command'
+      - 'echo "Successfully connected to instance"'
 images:
   - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
 options:
