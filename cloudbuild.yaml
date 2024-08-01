@@ -42,17 +42,6 @@ steps:
           else
             echo "Docker is already installed"
           fi
-  # Step 5: Authenticate Docker with Google Cloud
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'auth-docker'
-    args:
-      - 'compute'
-      - 'ssh'
-      - 'devserver' # Replace with your instance name
-      - '--zone'
-      - 'asia-east2-a' # Replace with your instance zone
-      - '--command'
-      - 'gcloud auth configure-docker asia-east2-docker.pkg.dev'
   # Step 6: Pull the Docker image from Google Artifact Registry
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'pull-image'
