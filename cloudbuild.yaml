@@ -25,7 +25,7 @@ steps:
       - 'ssh'
       - 'devserver' # Replace with your instance name
       - '--zone'
-      - 'asia-east2-docker' # Replace with your instance zone
+      - 'asia-east2a-docker' # Replace with your instance zone
       - '--command'
       - 'echo "Successfully connected to instance"'
 images:
