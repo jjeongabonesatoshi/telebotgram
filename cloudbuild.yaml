@@ -23,9 +23,9 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - 'INSTANCE_NAME' # Replace with your instance name
+      - 'devserver' # Replace with your instance name
       - '--zone'
-      - 'ZONE' # Replace with your instance zone
+      - 'asia-east2-docker' # Replace with your instance zone
       - '--command'
       - 'echo "Successfully connected to instance"'
 images:
