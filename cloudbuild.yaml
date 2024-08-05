@@ -45,6 +45,7 @@ steps:
 #          fi
       - '--ssh-flag=-o ConnectTimeout=60'  # Increase SSH connection timeout to 30 seconds
       - '--ssh-flag=-o ServerAliveInterval=60'
+      - '--verbosity=debug'
   # Step 6: Pull the Docker image from Google Artifact Registry
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'pull-image'
