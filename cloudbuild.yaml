@@ -1,30 +1,30 @@
 
 steps:
   # Step 1: Build the Docker image with a tag
-  - name: 'gcr.io/cloud-builders/docker'
-    args: [
-      'build',
-      '-t',
-      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA',
-      '-t',
-      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest',
-      '--cache-from',
-      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest',
-      '.'
-    ]
-    id: 'build'
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: [
+#      'build',
+#      '-t',
+#      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA',
+#      '-t',
+#      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest',
+#      '--cache-from',
+#      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest',
+#      '.'
+#    ]
+#    id: 'build'
 
   # Step 2: Push the Docker image to Google Artifact Registry
-  - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA']
-    id: 'push'
+#  - name: 'gcr.io/cloud-builders/docker'
+#    args: ['push', 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA']
+#    id: 'push'
   # Step 3 & 4: Verify connection to the GCE instance and check if Docker is installed, install if not
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'verify-and-install-docker'
     args:
       - 'compute'
       - 'ssh'
-      - 'devserver' # Replace with your instance name
+      - 'apiserver' # Replace with your instance name
       - '--zone'
       - 'asia-east2-a' # Replace with your instance zone
       - '--command'
@@ -43,35 +43,7 @@ steps:
 #          else
 #            echo "Docker is already installed"
 #          fi
-      - '--ssh-flag=-o ConnectTimeout=60'  # Increase SSH connection timeout to 30 seconds
-      - '--ssh-flag=-o ServerAliveInterval=60'
       - '--verbosity=debug'
-  # Step 6: Pull the Docker image from Google Artifact Registry
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'pull-image'
-    args:
-      - 'compute'
-      - 'ssh'
-      - 'devserver' # Replace with your instance name
-      - '--zone'
-      - 'asia-east2-a' # Replace with your instance zone
-      - '--command'
-      - 'docker pull asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
-  # Step 7: Run the Docker container
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'run-container'
-    args:
-      - 'compute'
-      - 'ssh'
-      - 'devserver' # Replace with your instance name
-      - '--zone'
-      - 'asia-east2-a' # Replace with your instance zone
-      - '--command'
-      - |
-          sudo fuser -k 80/tcp || true &&
-          docker stop telebot-container || true &&
-          docker rm telebot-container || true &&
-          docker run -d --name telebot-container -p 80:80 asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest
 images:
   - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
 options:
