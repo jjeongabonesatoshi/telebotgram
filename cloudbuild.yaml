@@ -43,10 +43,8 @@ steps:
 #          else
 #            echo "Docker is already installed"
 #          fi
-      - '--attempt=3'
-      - '--retry-delay=10s'
-      - '--verbosity=debug'
-
+      - '--ssh-flag=-o ConnectTimeout=60'  # Increase SSH connection timeout to 30 seconds
+      - '--ssh-flag=-o ServerAliveInterval=60'
   # Step 6: Pull the Docker image from Google Artifact Registry
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'pull-image'
