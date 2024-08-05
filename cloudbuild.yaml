@@ -24,7 +24,7 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - 'apiserver' # Replace with your instance name
+      - 'devserver' # Replace with your instance name
       - '--zone'
       - 'asia-east2-a' # Replace with your instance zone
       - '--command'
@@ -43,7 +43,7 @@ steps:
 #          else
 #            echo "Docker is already installed"
 #          fi
-images:
-  - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
+#images:
+#  - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
 options:
   logging: CLOUD_LOGGING_ONLY
