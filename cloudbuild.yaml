@@ -29,7 +29,7 @@ steps:
       - 'asia-east2-a' # Replace with your instance zone
       - '--command'
       - |
-          echo "Successfully connected to instance" &&
+          echo "Successfully connected to instance"
 #          if ! command -v docker &> /dev/null
 #          then
 #            sudo apt-get update &&
@@ -43,7 +43,6 @@ steps:
 #          else
 #            echo "Docker is already installed"
 #          fi
-      - '--verbosity=debug'
 images:
   - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
 options:
