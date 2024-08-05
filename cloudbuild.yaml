@@ -24,9 +24,9 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - 'felix-test' # Replace with your instance name
+      - 'felix-testing' # Replace with your instance name
       - '--zone'
-      - 'asia-east2-a' # Replace with your instance zone
+      - 'asia-east2-c' # Replace with your instance zone
       - '--command'
       - |
           echo "Successfully connected to instance"
