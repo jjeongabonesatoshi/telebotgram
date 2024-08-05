@@ -24,12 +24,12 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - 'ci-cd-test' # Replace with your instance name
+      - 'apiserver' # Replace with your instance name
       - '--zone'
-      - 'asia-east2-c' # Replace with your instance zone
+      - 'asia-east2-a' # Replace with your instance zone
       - '--command'
       - |
-          echo "Successfully connected to instance"
+          whoami
 #          if ! command -v docker &> /dev/null
 #          then
 #            sudo apt-get update &&
