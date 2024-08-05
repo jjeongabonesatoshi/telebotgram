@@ -1,3 +1,4 @@
+
 steps:
   # Step 1: Build the Docker image with a tag
   - name: 'gcr.io/cloud-builders/docker'
@@ -29,19 +30,19 @@ steps:
       - '--command'
       - |
           echo "Successfully connected to instance" &&
-          if ! command -v docker &> /dev/null
-          then
-            sudo apt-get update &&
-            sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common &&
-            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&
-            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" &&
-            sudo apt-get update &&
-            sudo apt-get install -y docker-ce &&
-            sudo usermod -aG docker $(whoami) &&
-            newgrp docker
-          else
-            echo "Docker is already installed"
-          fi
+#          if ! command -v docker &> /dev/null
+#          then
+#            sudo apt-get update &&
+#            sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common &&
+#            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&
+#            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" &&
+#            sudo apt-get update &&
+#            sudo apt-get install -y docker-ce &&
+#            sudo usermod -aG docker $(whoami) &&
+#            newgrp docker
+#          else
+#            echo "Docker is already installed"
+#          fi
   # Step 6: Pull the Docker image from Google Artifact Registry
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'pull-image'
@@ -64,6 +65,7 @@ steps:
       - 'asia-east2-a' # Replace with your instance zone
       - '--command'
       - |
+          sudo fuser -k 80/tcp || true &&
           docker stop telebot-container || true &&
           docker rm telebot-container || true &&
           docker run -d --name telebot-container -p 80:80 asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest
