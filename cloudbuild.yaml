@@ -24,7 +24,7 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - 'devserver' # Replace with your instance name
+      - 'apiserver' # Replace with your instance name
       - '--zone'
       - 'asia-east2-a' # Replace with your instance zone
       - '--command'
