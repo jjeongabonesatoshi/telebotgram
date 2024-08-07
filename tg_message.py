@@ -2,7 +2,6 @@ import os
 import telebot
 from dotenv import load_dotenv, dotenv_values #a library use to scrape the env.
 import time
-import threading
 load_dotenv()
 API_KEY = os.getenv("API_KEY") # getting the API_KEY variable from .env
 bot = telebot.TeleBot(API_KEY)

@@ -13,6 +13,7 @@ RUN pip install -r ./requirements.txt
 RUN crontab /usr/src/app/job.txt
 
 # # Run the cron service and tail the cron log file
+#CMD ["python3", "-m", "venv", "myenv"]
 CMD ["cron", "-f"]
 # CMD ["python3", "script.py"]
 #jkfhdjkgi

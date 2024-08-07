@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "praxis-dolphin-333916",
+  "private_key_id": "a2c5c36f4d2168fb7719c8f5a5dedafbd69552c9",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDsX5ii+xdgRRtf\n9AFnHXoWE9MLbnmnrZAbjquTULtLidrhLfnY9HzOYRd3/KYrNSjiTUbBC7GhS6Ft\nSxcoUVGUJ324R4FgV/mVAV6VejXBw1lspylXictdUr15zGWAaQ30NgjTz95yTOoL\nclUxbYwhewKKETKYScBMsuOYg/NhD/ccVnRB2fQYzch6vLSp2NGNlQyWgd5mdcBK\n0IBdNYqXIFXmpr/PhGYtlWTj+sfnmjBZUhYTZKmuIu4hLH7W6OrERDmuTJtDOnHA\ni8mszJgazvpKi5mgR/PW48Z9hs/AtlD2e61JdGLSeyduO7SFPLg+kavr6t4cOyki\nZ09zXg3BAgMBAAECggEALsfqsxLjuPtkZBSsNGa6k2UAB0qpjByHIVUWsvSu5M/X\nQGqzgJM+oi/ID8iycGm4ejVWE/3G/Ye03qcWYbXaYeqA8LhCLDmtHSbku8uwmPUb\nHSxmO7t7QrCN7G2eBxCDoPoSvCzvNwru5S4PG1W1fqjUQ1QNAePSybs73SL8R5Ca\naIUL0WzaPr/6MpdvjJ5lTshnTjgpGPBRNg5AcVMWtTgNJJXC1VIKV02WXrPYs0HN\n1Bpw1cBf+v5g326wgaQiAw/bnA3tWSVux403dWp2ts1/Co5eK/YqrRQKe7zeQGpJ\ndPdhcdEg6juwU1OrUjnKqnie1nUQS4O1M3Xw17/quQKBgQD+SfF6JB11iFt6nS7L\ngSrF/VYsHM1LhxpPDI9q1ttCsFSkyQXI7YIdDQVDY/EAwxJ6lBjJcffR63NbXshP\noT0KYeNIgJgrvCo2rxBEypGJUNzptKLWoWDrGXcgUtOTyJSKox2GLZX1H3z+rd1e\nk7VKVnX1RuWHwc2pDE9w75oxFQKBgQDt9sphKgJo4Yq1yi4D69xwTE5tjcJI5Vld\n8+K2EJm8KCZi9EL/aFyhB4msZOzORo6Jki2qYMMmB9FbH8vBizgV93ckmGwuGQD5\ntY6ayg3lkArquAvcELBUfvZLXFyRoe3ticvIwvs9duazU0WVHTcAt0NeejuW8Pt0\nhFyRavhc/QKBgAZUEsVmZrFJHnWzublo0oaw4lcgtF8/0oDLIDqZdEV5m/Gp6xHw\nDz/n1gyyTQom0KvqSZ+hzXgU8v8AId4RdjJu8zgXszHLcgWAX9hGbk7Li2Ppke/j\nfkT7kkJkrU1NPZ0hqBdxxPyftv2jmBHFfUqHUlIzXHz/br3ZR5TY8a5tAoGBANUP\nIAh7ColJV16I1UZhiY9qYtYoFIob/zXlxVjp6BvVfvkeZlYz5KuxCg02l+fguIJo\nRUbFODT2zvXdtBtoQSE53oz/g+yKKptpeXMR8ftWSs/5VXUF5DrjKjYzThZ+e38w\n3yqzmSthKBHrPuPRsouLimAu5OeygBHE6PSyaAkpAoGBAPX3TR/z8Sx9KV3MEzeK\nC2WR2AliVBMjLAaA5heNYUo0X9P364pid/5UZ/ciXKVRkDPn0T7RbnHdRbAZH9c7\norDlJmj9CvLkOop3SkHs8CGVPWyW0hAirL0cRwS5Qkg9vbZXoDH8gva/ba9YE+Pu\n765geBMd3dDhiE9Kkotjadgn\n-----END PRIVATE KEY-----\n",
+  "client_email": "jjeongcicdtest@praxis-dolphin-333916.iam.gserviceaccount.com",
+  "client_id": "101565267103354383467",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/jjeongcicdtest%40praxis-dolphin-333916.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
