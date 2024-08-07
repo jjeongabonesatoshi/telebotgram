@@ -13,7 +13,25 @@ steps:
       '.'
     ]
     id: 'build'
+  # Existing steps to build and push Docker images remain unchanged
 
+  # Step before creating new instance: Check if the instance already exists
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'check-instance'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        if gcloud compute instances list --filter="name=('new-instance')" --zone="asia-east2-a" | grep "new-instance"; then
+          echo "Instance already exists. Skipping creation."
+        else
+          gcloud compute instances create "new-instance" \
+            --zone="asia-east2-a" \
+            --machine-type="n1-standard-1" \
+            --image-family="debian-11" \
+            --image-project="debian-cloud" \
+            --metadata="ssh-keys=jjeongab:ssh-rsa ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFE3EfIfpbnhTtGnAL/XYN2WfDnBcj3A64ml1b7nPZKO jjeongab@onesatoshi.world"
+        fi
   # Step 2: Push the Docker image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA']
