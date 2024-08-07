@@ -20,18 +20,23 @@ steps:
     id: 'check-instance'
     entrypoint: 'bash'
     args:
-      - '-c'
-      - |
-        if gcloud compute instances list --filter="name=('new-instance')" --zone="asia-east2-a" | grep "new-instance"; then
-          echo "Instance already exists. Skipping creation."
-        else
-          gcloud compute instances create "new-instance" \
-            --zone="asia-east2-a" \
-            --machine-type="n1-standard-1" \
-            --image-family="debian-11" \
-            --image-project="debian-cloud" \
-            --metadata="ssh-keys=jjeongab:ssh-rsa ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFE3EfIfpbnhTtGnAL/XYN2WfDnBcj3A64ml1b7nPZKO jjeongab@onesatoshi.world"
-        fi
+    - '-c'
+    - |
+      set -x  # Enable debugging to see command outputs
+      INSTANCE_NAME="new-instance"
+      ZONE="asia-east2-a"
+      echo "Checking if $INSTANCE_NAME exists in $ZONE..."
+      if gcloud compute instances describe $INSTANCE_NAME --zone=$ZONE; then
+        echo "Instance $INSTANCE_NAME already exists. Skipping creation."
+      else
+        echo "Instance $INSTANCE_NAME does not exist. Creating now..."
+        gcloud compute instances create $INSTANCE_NAME \
+          --zone=$ZONE \
+          --machine-type="n1-standard-1" \
+          --image-family="debian-11" \
+          --image-project="debian-cloud" \
+          --metadata="ssh-keys=jjeongab:ssh-rsa ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFE3EfIfpbnhTtGnAL/XYN2WfDnBcj3A64ml1b7nPZKO jjeongab@onesatoshi.world"
+      fi
   # Step 2: Push the Docker image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args: ['push', 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA']
