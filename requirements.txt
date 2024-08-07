@@ -1,4 +1,4 @@
 python-dotenv
 telebot
 google-cloud-compute
-google-protobuf
+protobuf
