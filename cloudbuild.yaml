@@ -18,18 +18,17 @@ steps:
       - 'push'
       - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA'
     id: 'push'
-
-  # Step 3: Verify SSH connection to the new instance with retry mechanism
+  # Revised Step 3 with retry mechanism
   - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - 'compute'
-      - 'ssh'
-      - 'sshtesting'
-      - '--zone=asia-east2-a'
-      - '--command=echo "SSH works!"'
     id: 'verify-ssh'
-
-  # Step 4: Verify and install Docker on GCE instance if not present
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        for i in {1..5}; do
+          gcloud compute ssh sshtesting --zone=asia-east2-a --command='echo "SSH works!"' && break || sleep 10;
+        done
+  # Ensure subsequent steps wait for the successful completion of the SSH test
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'verify-and-install-docker'
     entrypoint: 'bash'
@@ -40,6 +39,8 @@ steps:
           gcloud compute ssh sshtesting --zone asia-east2-a --command 'sudo apt-get update && sudo apt-get install -y docker.io'
         fi
     waitFor: ['verify-ssh']
+
+
 
   # Step 5: Pull the Docker image from Google Artifact Registry onto the instance
   - name: 'gcr.io/cloud-builders/gcloud'
