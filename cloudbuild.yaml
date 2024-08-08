@@ -21,13 +21,13 @@ steps:
   # Revised Step 3 with retry mechanism
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'verify-ssh'
-    entrypoint: 'bash'
     args:
-      - '-c'
-      - |
-        for i in {1..5}; do
-          gcloud compute ssh sshtesting --zone=asia-east2-a --command='echo "SSH works!"' && break || sleep 10;
-        done
+    - 'compute'
+    - 'ssh'
+    - 'sshtesting'
+    - '--zone=asia-east2-a'
+    - '--command=echo "SSH works!"'
+    - '--retry-ssh'
   # Ensure subsequent steps wait for the successful completion of the SSH test
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'verify-and-install-docker'
