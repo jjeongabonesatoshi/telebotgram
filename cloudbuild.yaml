@@ -27,7 +27,6 @@ steps:
       - 'sshtesting'
       - '--zone=asia-east2-a'
       - '--command=echo "SSH works!"'
-      - '--retry-on-failure'
     id: 'verify-ssh'
 
   # Step 4: Verify and install Docker on GCE instance if not present
