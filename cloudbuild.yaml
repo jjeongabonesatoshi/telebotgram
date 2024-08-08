@@ -34,7 +34,7 @@ steps:
 #    id: 'create-instance'
   # New Step: Verify SSH connection to the new instance
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['compute', 'ssh', 'sshtesting', '--zone=asia-east2-a', '--command=echo "SSH works!"','--retry-on-failure']
+    args: ['compute', 'ssh', 'sshtesting', '--zone=asia-east2-a', '--command=echo "SSH works!"']
     id: 'verify-ssh'
 
   # Step 3 & 4: Verify connection to the GCE instance and check if Docker is installed, install if not
