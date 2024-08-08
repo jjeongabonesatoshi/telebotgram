@@ -11,7 +11,6 @@ steps:
       - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
       - '.'
     id: 'build'
-
   # Step 2: Push the Docker image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
@@ -27,7 +26,6 @@ steps:
     - 'sshtesting'
     - '--zone=asia-east2-a'
     - '--command=echo "SSH works!"'
-    - '--retry-ssh'
   # Ensure subsequent steps wait for the successful completion of the SSH test
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'verify-and-install-docker'
@@ -39,9 +37,6 @@ steps:
           gcloud compute ssh sshtesting --zone asia-east2-a --command 'sudo apt-get update && sudo apt-get install -y docker.io'
         fi
     waitFor: ['verify-ssh']
-
-
-
   # Step 5: Pull the Docker image from Google Artifact Registry onto the instance
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'pull-image'
@@ -53,7 +48,6 @@ steps:
       - 'asia-east2-a'
       - '--command'
       - 'docker pull asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
-
   # Step 6: Run the Docker container
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'run-container'
@@ -68,10 +62,8 @@ steps:
           docker stop telebot-container || true &&
           docker rm telebot-container || true &&
           docker run -d --name telebot-container -p 80:80 asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest
-
 images:
   - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
-
 options:
   logging: CLOUD_LOGGING_ONLY
 timeout: '1200s'
