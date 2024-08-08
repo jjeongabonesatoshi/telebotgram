@@ -27,16 +27,16 @@ steps:
     - '--zone=asia-east2-a'
     - '--command=echo "SSH works!"'
   # Ensure subsequent steps wait for the successful completion of the SSH test
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'verify-and-install-docker'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        if ! gcloud compute ssh sshtesting --zone asia-east2-a --command 'command -v docker'; then
-          gcloud compute ssh sshtesting --zone asia-east2-a --command 'sudo apt-get update && sudo apt-get install -y docker.io'
-        fi
-    waitFor: ['verify-ssh']
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    id: 'verify-and-install-docker'
+#    entrypoint: 'bash'
+#    args:
+#      - '-c'
+#      - |
+#        if ! gcloud compute ssh sshtesting --zone asia-east2-a --command 'command -v docker'; then
+#          gcloud compute ssh sshtesting --zone asia-east2-a --command 'sudo apt-get update && sudo apt-get install -y docker.io'
+#        fi
+#    waitFor: ['verify-ssh']
   # Step 5: Pull the Docker image from Google Artifact Registry onto the instance
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'pull-image'
