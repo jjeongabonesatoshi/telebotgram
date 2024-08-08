@@ -1,93 +1,77 @@
-
 steps:
-   #Step 1: Build the Docker image with a tag
+  # Step 1: Build the Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: [
-      'build',
-      '-t',
-      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA',
-      '-t',
-      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest',
-      '--cache-from',
-      'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest',
-      '.'
-    ]
+    args:
+      - 'build'
+      - '-t'
+      - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA'
+      - '-t'
+      - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
+      - '--cache-from'
+      - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
+      - '.'
     id: 'build'
 
   # Step 2: Push the Docker image to Google Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['push', 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA']
+    args:
+      - 'push'
+      - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA'
     id: 'push'
-  # New Step: Create a new instance with SSH access
-#  - name: 'gcr.io/cloud-builders/gcloud'
-#    args:
-#      - 'compute'
-#      - 'instances'
-#      - 'create'
-#      - 'new-instance'
-#      - '--zone=asia-east2-a'
-#      - '--machine-type=n1-standard-1'
-#      - '--image-family=debian-11' # Update if necessary
-#      - '--image-project=debian-cloud'
-#      - '--metadata'
-#      - 'ssh-keys=jjeongab:ssh-rsa ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFE3EfIfpbnhTtGnAL/XYN2WfDnBcj3A64ml1b7nPZKO jjeongab@onesatoshi.world'
-#    id: 'create-instance'
-  # New Step: Verify SSH connection to the new instance
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['compute', 'ssh', 'sshtesting', '--zone=asia-east2-a', '--command=echo "SSH works!"']
-    id: 'verify-ssh'
 
-  # Step 3 & 4: Verify connection to the GCE instance and check if Docker is installed, install if not
+  # Step 3: Verify SSH connection to the new instance with retry mechanism
   - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'verify-and-install-docker'
     args:
       - 'compute'
       - 'ssh'
-      - 'sshtesting' # Replace with your instance name
-      - '--zone'
-      - 'asia-east2-a' # Replace with your instance zone
-      - '--command'
+      - 'sshtesting'
+      - '--zone=asia-east2-a'
+      - '--command=echo "SSH works!"'
+      - '--retry-on-failure'
+    id: 'verify-ssh'
+
+  # Step 4: Verify and install Docker on GCE instance if not present
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'verify-and-install-docker'
+    entrypoint: 'bash'
+    args:
+      - '-c'
       - |
-          whoami
-#          if ! command -v docker &> /dev/null
-#          then
-#            sudo apt-get update &&
-#            sudo apt-get install -y apt-transport-https ca-certificates curl software-properties-common &&
-#            curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - &&
-#            sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" &&
-#            sudo apt-get update &&
-#            sudo apt-get install -y docker-ce &&
-#            sudo usermod -aG docker $(whoami) &&
-#            newgrp docker
-#          else
-#            echo "Docker is already installed"
-#          fi
-  # Step 6: Pull the Docker image from Google Artifact Registry
+        if ! gcloud compute ssh sshtesting --zone asia-east2-a --command 'command -v docker'; then
+          gcloud compute ssh sshtesting --zone asia-east2-a --command 'sudo apt-get update && sudo apt-get install -y docker.io'
+        fi
+    waitFor: ['verify-ssh']
+
+  # Step 5: Pull the Docker image from Google Artifact Registry onto the instance
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'pull-image'
     args:
       - 'compute'
       - 'ssh'
-      - 'sshtesting' # Replace with your instance name
+      - 'sshtesting'
       - '--zone'
-      - 'asia-east2-a' # Replace with your instance zone
+      - 'asia-east2-a'
       - '--command'
       - 'docker pull asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
-  # Step 7: Run the Docker container
+
+  # Step 6: Run the Docker container
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'run-container'
     args:
       - 'compute'
       - 'ssh'
-      - 'sshtesting' # Replace with your instance name
+      - 'sshtesting'
       - '--zone'
-      - 'asia-east2-a' # Replace with your instance zone
+      - 'asia-east2-a'
       - '--command'
       - |
           docker stop telebot-container || true &&
           docker rm telebot-container || true &&
           docker run -d --name telebot-container -p 80:80 asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest
+
 images:
   - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
+
 options:
   logging: CLOUD_LOGGING_ONLY
+timeout: '1200s'
