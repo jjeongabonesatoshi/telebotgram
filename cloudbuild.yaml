@@ -34,7 +34,7 @@ steps:
 #    id: 'create-instance'
   # New Step: Verify SSH connection to the new instance
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['compute', 'ssh', 'sshtest', '--zone=asia-east2-a', '--command=echo "SSH works!"']
+    args: ['compute', 'ssh', 'sshtesting', '--zone=asia-east2-a', '--command=echo "SSH works!"']
     id: 'verify-ssh'
 
   # Step 3 & 4: Verify connection to the GCE instance and check if Docker is installed, install if not
@@ -43,7 +43,7 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - 'sshtest' # Replace with your instance name
+      - 'sshtesting' # Replace with your instance name
       - '--zone'
       - 'asia-east2-a' # Replace with your instance zone
       - '--command'
@@ -68,7 +68,7 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - 'sshtest' # Replace with your instance name
+      - 'sshtesting' # Replace with your instance name
       - '--zone'
       - 'asia-east2-a' # Replace with your instance zone
       - '--command'
@@ -79,7 +79,7 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - 'sshtest' # Replace with your instance name
+      - 'sshtesting' # Replace with your instance name
       - '--zone'
       - 'asia-east2-a' # Replace with your instance zone
       - '--command'
