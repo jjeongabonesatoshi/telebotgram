@@ -19,22 +19,22 @@ steps:
     args: ['push', 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:$COMMIT_SHA']
     id: 'push'
   # New Step: Create a new instance with SSH access
-  - name: 'gcr.io/cloud-builders/gcloud'
-    args:
-      - 'compute'
-      - 'instances'
-      - 'create'
-      - 'new-instance'
-      - '--zone=asia-east2-a'
-      - '--machine-type=n1-standard-1'
-      - '--image-family=debian-11' # Update if necessary
-      - '--image-project=debian-cloud'
-      - '--metadata'
-      - 'ssh-keys=jjeongab:ssh-rsa ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFE3EfIfpbnhTtGnAL/XYN2WfDnBcj3A64ml1b7nPZKO jjeongab@onesatoshi.world'
-    id: 'create-instance'
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    args:
+#      - 'compute'
+#      - 'instances'
+#      - 'create'
+#      - 'new-instance'
+#      - '--zone=asia-east2-a'
+#      - '--machine-type=n1-standard-1'
+#      - '--image-family=debian-11' # Update if necessary
+#      - '--image-project=debian-cloud'
+#      - '--metadata'
+#      - 'ssh-keys=jjeongab:ssh-rsa ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIFE3EfIfpbnhTtGnAL/XYN2WfDnBcj3A64ml1b7nPZKO jjeongab@onesatoshi.world'
+#    id: 'create-instance'
   # New Step: Verify SSH connection to the new instance
   - name: 'gcr.io/cloud-builders/gcloud'
-    args: ['compute', 'ssh', 'new instance', '--zone=asia-east2-a', '--command=echo "SSH works!"']
+    args: ['compute', 'ssh', 'sshtest', '--zone=asia-east2-a', '--command=echo "SSH works!"']
     id: 'verify-ssh'
 
   # Step 3 & 4: Verify connection to the GCE instance and check if Docker is installed, install if not
@@ -43,7 +43,7 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - 'devserver' # Replace with your instance name
+      - 'sshtest' # Replace with your instance name
       - '--zone'
       - 'asia-east2-a' # Replace with your instance zone
       - '--command'
@@ -68,7 +68,7 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - 'devserver' # Replace with your instance name
+      - 'sshtest' # Replace with your instance name
       - '--zone'
       - 'asia-east2-a' # Replace with your instance zone
       - '--command'
@@ -79,7 +79,7 @@ steps:
     args:
       - 'compute'
       - 'ssh'
-      - 'felix-testing' # Replace with your instance name
+      - 'sshtest' # Replace with your instance name
       - '--zone'
       - 'asia-east2-a' # Replace with your instance zone
       - '--command'
