@@ -41,19 +41,8 @@ steps:
       fi
     waitFor: ['verify-ssh']
   # Step 5: Pull the Docker image from Google Artifact Registry onto the instance
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'pull-image'
-    args:
-      - 'compute'
-      - 'ssh'
-      - 'sshtesting'
-      - '--zone'
-      - 'asia-east2-a'
-      - '--command'
-      - 'sudo docker pull asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
-  # Step 6: Run the Docker container
 #  - name: 'gcr.io/cloud-builders/gcloud'
-#    id: 'run-container'
+#    id: 'pull-image'
 #    args:
 #      - 'compute'
 #      - 'ssh'
@@ -61,10 +50,21 @@ steps:
 #      - '--zone'
 #      - 'asia-east2-a'
 #      - '--command'
-#      - |
-#          docker stop telebot-container || true &&
-#          docker rm telebot-container || true &&
-#          docker run -d --name telebot-container -p 80:80 asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest
+#      - 'sudo docker pull asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
+  # Step 6: Run the Docker container
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'run-container'
+    args:
+      - 'compute'
+      - 'ssh'
+      - 'sshtesting'
+      - '--zone'
+      - 'asia-east2-a'
+      - '--command'
+      - |
+          docker stop telebot-container || true &&
+          docker rm telebot-container || true &&
+          docker run -d --name telebot-container -p 80:80 asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest
 images:
   - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
 options:
