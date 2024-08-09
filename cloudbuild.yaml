@@ -40,7 +40,7 @@ steps:
           sudo apt-get install -y docker.io;
       fi
     waitFor: ['verify-ssh']
-  # Insert the Docker credentials configuration step here
+  # Insert the Docker credentials configuration step here, need for pull image from repostiory
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'setup-docker-credentials'
     args:
