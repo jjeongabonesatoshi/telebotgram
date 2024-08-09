@@ -62,9 +62,9 @@ steps:
       - 'asia-east2-a'
       - '--command'
       - |
-          sudo docker stop telebot-container || true &&
-          sudo docker rm telebot-container || true &&
-          sudo docker run -d --name telebot-container -p 80:80 asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest
+          sudo docker stop telebot || true &&
+          sudo docker rm telebot || true &&
+          sudo docker run -d --name telebot -p 80:80 asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest
 images:
   - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
 options:
