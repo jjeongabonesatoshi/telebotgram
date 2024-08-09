@@ -50,7 +50,7 @@ steps:
       - '--zone'
       - 'asia-east2-a'
       - '--command'
-      - 'docker pull asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
+      - 'sudo docker pull asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
   # Step 6: Run the Docker container
 #  - name: 'gcr.io/cloud-builders/gcloud'
 #    id: 'run-container'
