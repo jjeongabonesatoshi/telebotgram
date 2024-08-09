@@ -40,6 +40,20 @@ steps:
           sudo apt-get install -y docker.io;
       fi
     waitFor: ['verify-ssh']
+  # Insert the Docker credentials configuration step here
+  - name: 'gcr.io/cloud-builders/gcloud'
+    id: 'setup-docker-credentials'
+    args:
+      - 'compute'
+      - 'ssh'
+      - 'sshtesting'
+      - '--zone'
+      - 'asia-east2-a'
+      - '--command'
+      - |
+          sudo gcloud auth configure-docker --quiet &&
+          echo "Docker is now configured to use gcloud as a credential helper"
+    waitFor: ['verify-and-install-docker']
   # Step 5: Pull the Docker image from Google Artifact Registry onto the instance
   - name: 'gcr.io/cloud-builders/gcloud'
     id: 'pull-image'
@@ -52,19 +66,19 @@ steps:
       - '--command'
       - 'sudo docker pull asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
   # Step 6: Run the Docker container
-  - name: 'gcr.io/cloud-builders/gcloud'
-    id: 'run-container'
-    args:
-      - 'compute'
-      - 'ssh'
-      - 'sshtesting'
-      - '--zone'
-      - 'asia-east2-a'
-      - '--command'
-      - |
-          sudo docker stop telebot-container || true &&
-          sudo docker rm telebot-container || true &&
-          sudo docker run -d --name telebot-container  -p 80:80 asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest
+#  - name: 'gcr.io/cloud-builders/gcloud'
+#    id: 'run-container'
+#    args:
+#      - 'compute'
+#      - 'ssh'
+#      - 'sshtesting'
+#      - '--zone'
+#      - 'asia-east2-a'
+#      - '--command'
+#      - |
+#          sudo docker stop telebot-container || true &&
+#          sudo docker rm telebot-container || true &&
+#          sudo docker run -d --name telebot-container  -p 80:80 asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest
 images:
   - 'asia-east2-docker.pkg.dev/praxis-dolphin-333916/telebot/telebot-image:latest'
 options:
