@@ -16,7 +16,3 @@ RUN crontab /usr/src/app/job.txt
 #CMD ["python3", "-m", "venv", "myenv"]
 CMD ["cron", "-f"]
 # CMD ["python3", "script.py"]
-#jkfhdjkgi
-#vfdhoiajlflafdjd
-#dfas
-#fhaoifhjal
